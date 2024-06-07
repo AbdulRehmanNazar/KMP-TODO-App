@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import domain.TaskAction
 import presentation.components.ErrorScreen
 import presentation.components.LoadingScreen
 import presentation.components.TaskView
@@ -86,15 +87,23 @@ class HomeScreen : Screen {
                     onSelect = { selectedTask ->
                         navigator.push(TaskScreen(selectedTask))
                     },
-                    onFavorite = { task, favorite -> },
-                    onComplete = { task, favourite -> }
+                    onFavorite = { task, favorite ->
+                        viewModel.setAction(action = TaskAction.SetFavorite(task, favorite))
+                    },
+                    onComplete = { task, completed ->
+                        viewModel.setAction(action = TaskAction.SetCompleted(task, completed))
+                    }
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 DisplayTasks(modifier = Modifier.weight(1f),
                     tasks = completedTasks,
                     showActive = false,
-                    onComplete = { task, favourite -> },
-                    onDelete = { task -> }
+                    onComplete = { task, completed ->
+                        viewModel.setAction(action = TaskAction.SetCompleted(task, completed))
+                    },
+                    onDelete = { task ->
+                        viewModel.setAction(action = TaskAction.Delete(task))
+                    }
                 )
             }
         }

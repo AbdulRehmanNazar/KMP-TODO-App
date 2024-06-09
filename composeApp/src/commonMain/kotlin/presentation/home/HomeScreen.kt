@@ -55,7 +55,6 @@ class HomeScreen : Screen {
         val activeTasks by viewModel.activeTasks
         val completedTasks by viewModel.completedTasks
 
-
         Scaffold(
             topBar =
             {
